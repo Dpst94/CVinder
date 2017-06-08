@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "433318564744",
+    "firebase_url": "https://cvinder-c28a0.firebaseio.com",
+    "project_id": "cvinder-c28a0",
+    "storage_bucket": "cvinder-c28a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433318564744:android:de12ece81daa7aa9",
+        "android_client_info": {
+          "package_name": "truelegends.cvinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433318564744-iificpf0q7763l43s169jf0791ps8tus.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "truelegends.cvinder",
+            "certificate_hash": "6351f6c81a7eb04766eab22941c99a14403c4be3"
+          }
+        },
+        {
+          "client_id": "433318564744-c1lp03fg1tp1jluuc9ka3tira676mr4b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvZ2vx82iiyYfHdZrpm6jLvaEavXOZGh0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433318564744-c1lp03fg1tp1jluuc9ka3tira676mr4b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
