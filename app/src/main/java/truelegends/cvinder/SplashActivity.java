@@ -14,9 +14,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         TextView tx = (TextView)findViewById(R.id.app_title_text);
-
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/ArchivoNarrow-Regular.otf");
-
         tx.setTypeface(custom_font);
 
     }
