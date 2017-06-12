@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="truelegends.cvinder">
 
-    <uses-permission android:name="android.permission."/>
+    <uses-permission android:name="android.permission." />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity android:name=".AuthActivity">
+=======
+        <activity android:name=".MainActivity">
+
+>>>>>>> feature/Prototype_swiping_view
         </activity>
     </application>
 
