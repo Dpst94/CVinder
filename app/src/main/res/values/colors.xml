@@ -6,9 +6,6 @@
     <color name="colorLightText">#F3B49F</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
-<<<<<<< HEAD
     <color name="colorHint">#cccccc</color>
-=======
     <color name="colorLightGrey">#cecccc</color>
->>>>>>> feature/Prototype_swiping_view
 </resources>
