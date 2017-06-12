@@ -59,7 +59,8 @@
                     android:layout_weight="5"
                     android:text="Log in"
                     android:layout_gravity="bottom"
-                    android:backgroundTint="@color/colorAccent"/>
+                    android:backgroundTint="@color/colorAccent"
+                    android:onClick="logIn"/>
 
                 <Button
                     android:id="@+id/button"
@@ -68,7 +69,8 @@
                     android:layout_weight="5"
                     android:text="Sign up"
                     android:layout_gravity="bottom"
-                    android:backgroundTint="@color/colorAccent"/>
+                    android:backgroundTint="@color/colorAccent"
+                    android:onClick="signUp"/>
 
             </LinearLayout>
 

@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">CVinder</string>
     <string name="app_title">CV Finder</string>
+    <string name="username_hint">(company) username</string>
+    <string name="email_hint">e-mail</string>
+    <string name="pass_hint">password</string>
+    <string name="passconf_hint">corfirm password</string>
+    <string name="signup_text">Sign Up</string>
+    <string name="login_text">Log In</string>
+    <string name="invisible">invisible</string>
+    <string name="visible">visible</string>
+    <string name="backnav_exit_warning">Press back again to close the app.</string>
+    <string name="login_toast">Ehm.</string>
+    <string name="auth_failed">Something went wrong…</string>
+    <string name="required">Field is required.</string>
+    <string name="mail_requirement">Invalid e-mail!</string>
+    <string name="pass_requirement">Password must be 6 or more characters.</string>
+    <string name="name_requirement">Maximum of 15 characters.</string>
+    <string name="no_pass_match">Passwords don\'t match.</string>
 </resources>

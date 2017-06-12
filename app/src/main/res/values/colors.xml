@@ -6,4 +6,5 @@
     <color name="colorLightText">#F3B49F</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorHint">#cccccc</color>
 </resources>
