@@ -25,7 +25,13 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
 @Layout(R.layout.cvinder_card_view)
 @NonReusable
-public class CVinderCard {
+public class CVinderCard extends MainActivity {
+
+    public MainActivity activity;
+
+    public void onAttach(MainActivity activity){
+        this.activity = activity;
+    }
 
     @View(R.id.profileImageView)
     private ImageView profileImageView;
@@ -56,7 +62,13 @@ public class CVinderCard {
     @Click(R.id.profileImageView)
     private void onClick(){
         Log.d("EVENT", "profileImageView click");
-        mSwipeView.addView(this);
+        Log.d("this", "context: " + mContext);
+        Log.d("this", "profile: " + mProfile);
+        Log.d("this", "swipeview: " + mSwipeView);
+        Log.d("this"," "  + this);
+        Intent intent = new Intent(mContext, DisplayDetailedCVActivity.class);
+        mContext.startActivity(intent);
+        //mSwipeView.addView(this);
     }
 
     @SwipeOut
