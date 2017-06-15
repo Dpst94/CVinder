@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/apk/tools"
+    tools:context="truelegends.cvinder.SplashActivity">
+
+    <item
+        android:id="@+id/action_menu"
+        android:icon="@mipmap/ic_menu_white_24dp"
+        app:showAsAction="always"
+        android:title="List"
+        android:orderInCategory="200">
+        <menu>
+            <item
+                android:id="@+id/new_dive_toolbutton"
+                android:title="Hier" />
+            <item
+                android:id="@+id/dive_log_toolbutton"
+                android:title="Kunnen" />
+            <item
+                android:id="@+id/statistics_toolbutton"
+                android:title="Tabs" />
+            <item
+                android:id="@+id/nitrogen_toolbutton"
+                android:title="Komen" />
+        </menu>
+    </item>/>
+
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="200"
+        android:title="Log Out"
+        android:icon="@mipmap/ic_exit_to_app_white_24dp"
+        app:showAsAction="always"/>
+
+</menu>

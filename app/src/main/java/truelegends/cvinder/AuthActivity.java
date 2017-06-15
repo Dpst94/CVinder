@@ -6,6 +6,9 @@ package truelegends.cvinder;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,6 +22,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +31,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import truelegends.cvinder.Helpers.ToolbarHelper;
 
 public class AuthActivity extends SplashActivity implements View.OnClickListener {
 
@@ -40,10 +46,18 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference my_database;
 
+    private Toolbar toolbar;
+    ToolbarHelper toolbar_helper;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        // construct toolbar_menu
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar_helper = new ToolbarHelper();
 
         // initialize views
         username_field = (EditText) findViewById(R.id.name_input);
@@ -104,6 +118,28 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
         // initialize Firebase reference
         my_database = FirebaseDatabase.getInstance().getReference();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu toolbar) {
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.toolbar_menu, toolbar);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem toolbar) {
+
+        String clicked_item = toolbar_helper.getClickedMenuItem(toolbar, this);
+
+        // display toast for clicked toolbar item
+        if (!clicked_item.equals("")) {
+            Toast.makeText(this, clicked_item, Toast.LENGTH_SHORT).show();
+        } else if (clicked_item.equals("Logged out")) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(toolbar);
     }
 
     @Override
