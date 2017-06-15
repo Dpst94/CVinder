@@ -62,10 +62,6 @@ public class CVinderCard extends MainActivity {
     @Click(R.id.profileImageView)
     private void onClick(){
         Log.d("EVENT", "profileImageView click");
-        Log.d("this", "context: " + mContext);
-        Log.d("this", "profile: " + mProfile);
-        Log.d("this", "swipeview: " + mSwipeView);
-        Log.d("this"," "  + this);
         Intent intent = new Intent(mContext, DisplayDetailedCVActivity.class);
         mContext.startActivity(intent);
         //mSwipeView.addView(this);
