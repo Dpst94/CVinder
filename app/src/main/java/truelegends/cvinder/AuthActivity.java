@@ -71,8 +71,6 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
         // set listeners for buttons
         findViewById(R.id.login_button).setOnClickListener(this);
-        //findViewById(R.id.sign_out_button).setOnClickListener(this);
-        //findViewById(R.id.go_menu_button).setOnClickListener(this);
 
         // get extras from SplashActivity
         Bundle extras = getIntent().getExtras();
@@ -107,6 +105,8 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
                     // UserItem is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 //                    instr_text.setText(R.string.login_stilllogedin_instr);
+
+                    //moveToSwipe();
 
                 } else {
                     // UserItem is signed out
@@ -306,38 +306,6 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
         return valid;
     }
 
-//    /* Update interface after logging in or signing up. */
-//    private void updateUI(FirebaseUser user) {
-//
-//        if (user != null) {
-//            Button login_button = (Button) findViewById(R.id.login_button);
-//
-//            if (login_button != null) {
-//                findViewById(R.id.sign_up_button).setVisibility(View.GONE);
-//                findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
-//                findViewById(R.id.go_menu_button).setVisibility(View.VISIBLE);
-//                username_field.setVisibility(View.GONE);
-//                email_field.setVisibility(View.GONE);
-//                password_field.setVisibility(View.GONE);
-//
-//                if (pass_confirm_field.getVisibility() != View.INVISIBLE) {
-//                    pass_confirm_field.setVisibility(View.GONE);
-//                }
-//            } else {
-//
-//                username_field.setVisibility(View.VISIBLE);
-//                email_field.setVisibility(View.VISIBLE);
-//                password_field.setVisibility(View.VISIBLE);
-//
-//                if (confirm_pass != null) {
-//                    if (confirm_pass.equals(getString(R.string.home_passconfirm_invisible))) {
-//                        pass_confirm_field.setVisibility(View.INVISIBLE);
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     /* Save user information to Firebase upon signing up. */
     private void saveUserInformation() {
 
@@ -354,6 +322,14 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
         my_database.child("users").child(user_id).child("user_info").setValue(user);
 
+    }
+
+    private void moveToSwipe() {
+
+        Intent goToSwipe = new Intent(this, SwipeActivity.class);
+        startActivity(goToSwipe);
+
+        finish();
     }
 
     /* Listen for button click to determine what to do. */
@@ -378,14 +354,9 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
                     Toast.makeText(this, "Logged in succesfully.", Toast.LENGTH_LONG).show();
 
-//                    Intent goToMenu = new Intent(this, MenuActivity.class);
-//                    startActivity(goToMenu);
-//
-//                    finish();
-
-                }
-                else {
-                    Log.d("test", "onclick validate form not okay");
+                    if (mAuth.getCurrentUser() != null) {
+                        moveToSwipe();
+                    }
                 }
 
             } else if (title.equals(getString(R.string.login_text))) {
@@ -395,26 +366,12 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
                     Toast.makeText(this, "Signed up succesfully.", Toast.LENGTH_LONG).show();
 
-//                    Intent goToMenu = new Intent(this, MenuActivity.class);
-//                    startActivity(goToMenu);
-//
-//                    finish();
+                    if (mAuth.getCurrentUser() != null) {
+                        moveToSwipe();
+                    }
                 }
             }
 
         }
-        // upon pressing sign out button, sign user out and go back to HomeActivity
-//        else if (i == R.id.sign_out_button) {
-//            signOut();
-//            finish();
-//        }
-        // upon pressing continue button, move on to MenuActivity
-//        else if (i == R.id.go_menu_button) {
-//
-//            Intent goToMenu = new Intent(this, MenuActivity.class);
-//            startActivity(goToMenu);
-//
-//            finish();
-//        }
     }
 }
