@@ -25,13 +25,7 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
 @Layout(R.layout.cvinder_card_view)
 @NonReusable
-public class CVinderCard extends MainActivity {
-
-    public MainActivity activity;
-
-    public void onAttach(MainActivity activity){
-        this.activity = activity;
-    }
+public class CVinderCard {
 
     @View(R.id.profileImageView)
     private ImageView profileImageView;
