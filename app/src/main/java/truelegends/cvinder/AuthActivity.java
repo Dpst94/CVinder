@@ -6,6 +6,9 @@ package truelegends.cvinder;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,6 +22,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +31,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import truelegends.cvinder.Helpers.ToolbarHelper;
 
 public class AuthActivity extends SplashActivity implements View.OnClickListener {
 
@@ -40,10 +46,18 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference my_database;
 
+    private Toolbar toolbar;
+    ToolbarHelper toolbar_helper;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        // construct toolbar_menu
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar_helper = new ToolbarHelper();
 
         // initialize views
         username_field = (EditText) findViewById(R.id.name_input);
@@ -57,8 +71,6 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
         // set listeners for buttons
         findViewById(R.id.login_button).setOnClickListener(this);
-        //findViewById(R.id.sign_out_button).setOnClickListener(this);
-        //findViewById(R.id.go_menu_button).setOnClickListener(this);
 
         // get extras from SplashActivity
         Bundle extras = getIntent().getExtras();
@@ -94,6 +106,8 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 //                    instr_text.setText(R.string.login_stilllogedin_instr);
 
+                    //moveToSwipe();
+
                 } else {
                     // UserItem is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -104,6 +118,28 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
         // initialize Firebase reference
         my_database = FirebaseDatabase.getInstance().getReference();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu toolbar) {
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.toolbar_menu, toolbar);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem toolbar) {
+
+        String clicked_item = toolbar_helper.getClickedMenuItem(toolbar, this);
+
+        // display toast for clicked toolbar item
+        if (!clicked_item.equals("")) {
+            Toast.makeText(this, clicked_item, Toast.LENGTH_SHORT).show();
+        } else if (clicked_item.equals("Logged out")) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(toolbar);
     }
 
     @Override
@@ -270,38 +306,6 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
         return valid;
     }
 
-//    /* Update interface after logging in or signing up. */
-//    private void updateUI(FirebaseUser user) {
-//
-//        if (user != null) {
-//            Button login_button = (Button) findViewById(R.id.login_button);
-//
-//            if (login_button != null) {
-//                findViewById(R.id.sign_up_button).setVisibility(View.GONE);
-//                findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
-//                findViewById(R.id.go_menu_button).setVisibility(View.VISIBLE);
-//                username_field.setVisibility(View.GONE);
-//                email_field.setVisibility(View.GONE);
-//                password_field.setVisibility(View.GONE);
-//
-//                if (pass_confirm_field.getVisibility() != View.INVISIBLE) {
-//                    pass_confirm_field.setVisibility(View.GONE);
-//                }
-//            } else {
-//
-//                username_field.setVisibility(View.VISIBLE);
-//                email_field.setVisibility(View.VISIBLE);
-//                password_field.setVisibility(View.VISIBLE);
-//
-//                if (confirm_pass != null) {
-//                    if (confirm_pass.equals(getString(R.string.home_passconfirm_invisible))) {
-//                        pass_confirm_field.setVisibility(View.INVISIBLE);
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     /* Save user information to Firebase upon signing up. */
     private void saveUserInformation() {
 
@@ -318,6 +322,14 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
         my_database.child("users").child(user_id).child("user_info").setValue(user);
 
+    }
+
+    private void moveToSwipe() {
+
+        Intent goToSwipe = new Intent(this, SwipeActivity.class);
+        startActivity(goToSwipe);
+
+        finish();
     }
 
     /* Listen for button click to determine what to do. */
@@ -342,14 +354,9 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
                     Toast.makeText(this, "Logged in succesfully.", Toast.LENGTH_LONG).show();
 
-//                    Intent goToMenu = new Intent(this, MenuActivity.class);
-//                    startActivity(goToMenu);
-//
-//                    finish();
-
-                }
-                else {
-                    Log.d("test", "onclick validate form not okay");
+                    if (mAuth.getCurrentUser() != null) {
+                        moveToSwipe();
+                    }
                 }
 
             } else if (title.equals(getString(R.string.login_text))) {
@@ -359,26 +366,12 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
                     Toast.makeText(this, "Signed up succesfully.", Toast.LENGTH_LONG).show();
 
-//                    Intent goToMenu = new Intent(this, MenuActivity.class);
-//                    startActivity(goToMenu);
-//
-//                    finish();
+                    if (mAuth.getCurrentUser() != null) {
+                        moveToSwipe();
+                    }
                 }
             }
 
         }
-        // upon pressing sign out button, sign user out and go back to HomeActivity
-//        else if (i == R.id.sign_out_button) {
-//            signOut();
-//            finish();
-//        }
-        // upon pressing continue button, move on to MenuActivity
-//        else if (i == R.id.go_menu_button) {
-//
-//            Intent goToMenu = new Intent(this, MenuActivity.class);
-//            startActivity(goToMenu);
-//
-//            finish();
-//        }
     }
 }
