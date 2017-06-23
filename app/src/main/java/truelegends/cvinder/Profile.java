@@ -15,9 +15,9 @@ public class Profile {
     @Expose
     private String name;
 
-    @SerializedName("url")
+    @SerializedName("image")
     @Expose
-    private String imageUrl;
+    private String image;
 
     @SerializedName("age")
     @Expose
@@ -35,12 +35,12 @@ public class Profile {
         this.name = name;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getAge() {
