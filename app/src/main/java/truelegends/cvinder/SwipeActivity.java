@@ -5,6 +5,7 @@ import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -31,6 +32,7 @@ public class SwipeActivity extends AuthActivity {
 
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
+    private int height, minHeight;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser firebase_user = mAuth.getCurrentUser();
@@ -57,8 +59,10 @@ public class SwipeActivity extends AuthActivity {
 
         person_list = new ArrayList<>();
 
-        int bottomMargin = Utils.dpToPx(160);
+        int bottomMargin = Utils.dpToPx(60);
         Point windowSize = Utils.getDisplaySize(getWindowManager());
+        height = windowSize.y;
+        minHeight = windowSize.y - bottomMargin;
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
                 .setHeightSwipeDistFactor(10)
@@ -135,7 +139,7 @@ public class SwipeActivity extends AuthActivity {
                         }
 
                         for(Profile profile : person_list){
-                            mSwipeView.addView(new CVinderCard(mContext, profile, mSwipeView));
+                            mSwipeView.addView(new CVinderCard(mContext, profile, mSwipeView, height, minHeight));
                         }
                     }
 
