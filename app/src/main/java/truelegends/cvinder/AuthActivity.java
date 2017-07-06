@@ -29,18 +29,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import truelegends.cvinder.Helpers.ToolbarHelper;
 
 public class AuthActivity extends SplashActivity implements View.OnClickListener {
 
-    private static final String TAG = "AuthActivity";
+    private static final String TAG = "test tag";
 
     String title, visibility;
     TextView title_text;
     EditText username_field, email_field, pass_field, passconf_field;
+    ArrayList<String> user_list;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -48,6 +54,7 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
 
     private Toolbar toolbar;
     ToolbarHelper toolbar_helper;
+    DatabaseReference database_ref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,8 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
         passconf_field = (EditText) findViewById(R.id.passconf_input);
 
         title_text = (TextView) findViewById(R.id.auth_title_text);
+
+        user_list = new ArrayList<>();
 
         Button login_button = (Button) findViewById(R.id.login_button);
 
@@ -157,7 +166,7 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
     }
 
     /* Create new user account. */
-    private void createAccount(String email, String password) {
+    private void createAccount(final String email, String password) {
 
         //final String toast = getString(R.string.login_toast);
         Log.d("test", "does it even get into the create account?");
@@ -179,8 +188,10 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
                         Log.d("test", "create user with email, task is succesful geeft: " + task.isSuccessful());
 
+                        FirebaseUser user = mAuth.getCurrentUser();
+
                         // if sign in fails, display a message to the user
-                        if (!task.isSuccessful()) {
+                        if (!task.isSuccessful() && user != null) {
                             Toast.makeText(AuthActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -188,8 +199,23 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
                         else {
                             //instr_text.setText(new_instr);
                             Log.d("test", "to save user info");
-                            saveUserInformation();
+
+                            saveUserInformation(email);
                         }
+
+                        if (user != null) {
+                            // User is signed in
+                            // NOTE: this Activity should get onpen only when the user is not signed in, otherwise
+                            // the user will receive another verification email.
+                            Log.d("test", "to send verification email");
+
+                            sendVerificationEmail(user);
+
+                        } else {
+                            // User is signed out
+                            Log.d("test", "user is logged out???");
+                        }
+
                     }
                 });
     }
@@ -225,17 +251,15 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
                         else {
                             //instr_text.setText(new_instr);
                             Log.d("test", "sign in succeededddddd");
+
+                            checkIfEmailVerified();
+                            //moveToSwipe();
                         }
 
                     }
                 });
     }
-//
-//    /* Sign user out. */
-//    private void signOut() {
-//        mAuth.signOut();
-//        updateUI(null);
-//    }
+
 
     /* Validate user's data. */
     private boolean validateForm() {
@@ -307,20 +331,89 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
     }
 
     /* Save user information to Firebase upon signing up. */
-    private void saveUserInformation() {
+    private void saveUserInformation(final String email) {
 
         Log.d("test", "inside save user info");
 
-
         String username = username_field.getText().toString().trim();
-        String email = email_field.getText().toString().trim();
+        String user_id = "";
 
         FirebaseUser firebase_user = mAuth.getCurrentUser();
-        String user_id = firebase_user.getUid();
 
-        UserItem user = new UserItem(username, email);
+        if (firebase_user != null) {
+            user_id = firebase_user.getUid();
 
-        my_database.child("users").child(user_id).child("user_info").setValue(user);
+            UserItem user = new UserItem(username, email);
+
+            my_database.child("users").child(user_id).child("user_info").setValue(user);
+        } else {
+
+            Toast.makeText(this, "Please verify your e-mail before signing in", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    private void sendVerificationEmail(FirebaseUser user) {
+
+        Log.d("test", "in send verification");
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // email sent
+
+
+                            // after email is sent just logout the user and finish this activity
+                            mAuth.signOut();
+//                            startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+//                            finish();
+
+                            Log.d("test", "jaaaaaa email sent, user logged out");
+
+                        }
+                        else
+                        {
+                            // email not sent, so display message and restart the activity or do whatever you wish to do
+
+                            //restart this activity
+                            overridePendingTransition(0, 0);
+                            finish();
+                            overridePendingTransition(0, 0);
+                            startActivity(getIntent());
+
+                            Log.d("test", "email not sent :(((");
+
+                        }
+                    }
+                });
+    }
+
+    private void checkIfEmailVerified() {
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        assert user != null;
+        if (user.isEmailVerified())
+        {
+            // user is verified, so you can finish this activity or send user to activity which you want.
+            finish();
+            Toast.makeText(this, "Successfully logged in", Toast.LENGTH_SHORT).show();
+
+            moveToSwipe();
+        }
+        else
+        {
+            // email is not verified, so just prompt the message to the user and restart this activity.
+            // NOTE: don't forget to log out the user.
+            Toast.makeText(this, "Please verify your e-mail", Toast.LENGTH_SHORT).show();
+
+            mAuth.signOut();
+
+            //restart this activity
+
+        }
 
     }
 
@@ -341,7 +434,7 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
         // upon pressing sign up button, create new account or log in
         if (i == R.id.login_button) {
 
-            String email = email_field.getText().toString();
+            String email = email_field.getText().toString().trim();
             String password = pass_field.getText().toString();
 
             if (title.equals(getString(R.string.signup_text))) {
@@ -351,24 +444,12 @@ public class AuthActivity extends SplashActivity implements View.OnClickListener
                 if (validateForm()) {
                     createAccount(email, password);
                     signIn(email, password);
-
-                    Toast.makeText(this, "Logged in succesfully.", Toast.LENGTH_LONG).show();
-
-                    if (mAuth.getCurrentUser() != null) {
-                        moveToSwipe();
-                    }
                 }
 
             } else if (title.equals(getString(R.string.login_text))) {
 
                 if (validateForm()) {
                     signIn(email, password);
-
-                    Toast.makeText(this, "Signed up succesfully.", Toast.LENGTH_LONG).show();
-
-                    if (mAuth.getCurrentUser() != null) {
-                        moveToSwipe();
-                    }
                 }
             }
 
