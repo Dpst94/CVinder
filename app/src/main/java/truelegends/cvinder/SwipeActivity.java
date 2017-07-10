@@ -59,7 +59,7 @@ public class SwipeActivity extends AuthActivity {
 
         person_list = new ArrayList<>();
 
-        int bottomMargin = Utils.dpToPx(60);
+        int bottomMargin = Utils.dpToPx(50);
         Point windowSize = Utils.getDisplaySize(getWindowManager());
         height = windowSize.y;
         minHeight = windowSize.y - bottomMargin;

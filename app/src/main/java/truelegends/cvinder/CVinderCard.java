@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import android.animation.ValueAnimator;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.support.v7.widget.CardView;
 import android.widget.Space;
@@ -83,7 +83,7 @@ public class CVinderCard {
         locationNameTxt.setText(mProfile.getLocation());
     }
 
-    @Click(R.id.profileImageView)
+    @Click(R.id.cvinderCardView)
     private void onClick(){
         Log.d("EVENT", "profileImageView click");
 //        Intent intent = new Intent(mContext, DisplayDetailedCVActivity.class);
@@ -119,18 +119,75 @@ public class CVinderCard {
 
     public void expandView() {
         space.setVisibility(android.view.View.GONE);
+        profileImageView.setVisibility(android.view.View.GONE);
+        moreTxt.setVisibility(android.view.View.VISIBLE);
         ViewGroup.LayoutParams layoutParams = cardView.getLayoutParams();
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)layoutParams;
         lp.setMargins(0,0,0,0);
         cardView.setLayoutParams(lp);
+
+        layoutParams = nameAgeTxt.getLayoutParams();
+        lp = (LinearLayout.LayoutParams)layoutParams;
+        int margin = Utils.dpToPx(10);
+        lp.setMargins(0,margin,0,margin);
+        nameAgeTxt.setTextSize(26);
+        nameAgeTxt.setLayoutParams(lp);
+
+        ViewGroup.LayoutParams layoutParams1 = profileLayout.getLayoutParams();
+        FrameLayout.LayoutParams lp1 = (FrameLayout.LayoutParams)layoutParams1;
+        lp1.gravity = Gravity.TOP;
+        profileLayout.setLayoutParams(lp1);
+
+//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+//        params.gravity = Gravity.TOP;
+//        profileLayout.setLayoutParams(params);
+
+//        ViewGroup.LayoutParams layoutParams1 = profileLayout.getLayoutParams();
+//        LinearLayout.LayoutParams lp1 = (LinearLayout.LayoutParams) layoutParams1;
+//        Log.d("layoutparam", "" + lp1.gravity);
+//        lp1.gravity = Gravity.TOP;
+//        profileLayout.setLayoutParams(lp1);
+
     }
 
     public void collapseView() {
         space.setVisibility(android.view.View.VISIBLE);
+        profileImageView.setVisibility(android.view.View.VISIBLE);
+        moreTxt.setVisibility(android.view.View.GONE);
         ViewGroup.LayoutParams layoutParams = cardView.getLayoutParams();
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)layoutParams;
-        lp.setMargins(10,10,10,10);
+        int margin = Utils.dpToPx(10);
+        lp.setMargins(margin,margin,margin,margin);
+
         cardView.setLayoutParams(lp);
+
+        layoutParams = nameAgeTxt.getLayoutParams();
+        lp = (LinearLayout.LayoutParams)layoutParams;
+        lp.setMargins(0,0,0,0);
+        nameAgeTxt.setTextSize(18);
+        nameAgeTxt.setLayoutParams(lp);
+
+        ViewGroup.LayoutParams layoutParams1 = profileLayout.getLayoutParams();
+        FrameLayout.LayoutParams lp1 = (FrameLayout.LayoutParams)layoutParams1;
+        lp1.gravity = Gravity.BOTTOM;
+        profileLayout.setLayoutParams(lp1);
+
+//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+//        params.gravity = Gravity.BOTTOM; // switch matchparent with wrap content and you get half picture.
+//        profileLayout.setLayoutParams(params);
+
+//        ViewGroup.LayoutParams params = profileLayout.getLayoutParams();
+//        LinearLayout.LayoutParams lp1 = (LinearLayout.LayoutParams)params;
+//        lp1.gravity = Gravity.BOTTOM;
+//        profileLayout.requestLayout();
+
+//        WindowManager.LayoutParams params = new LayoutParams();
+//        params.gravity = Gravity.TOP;
+//        profileLayout.setLayoutParams(params);
+
+//        layoutParams = profileLayout.getLayoutParams();
+//        layoutParams.height = 100;
+//        profileLayout.setLayoutParams(layoutParams);
     }
 
     public void collapseOrExpandView(int height) {
